@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 //CORS Middleware
 app.use(function (req, res, next) {
   //Enabling CORS
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "https://audit-asset-management.herokuapp.com");
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, contentType,Content-Type, Accept, Authorization");
   next();
@@ -43,6 +43,7 @@ var DBConfig = DataBaseConfig;
 
 var  executeQuery = function(res, query) {
   console.log("executeQuery: " + query);
+  sql.close();
   sql.connect(DBConfig, function (err) {
      if (err) {
         console.log("Error while connecting database :- " + err);
@@ -170,7 +171,7 @@ app.get("/api/insertAsset", function(req, res) {
   // var data = JSON.parse(req.query.data);
     // console.log(data["AssetType"]);
     if (req.query.OEMNumber != undefined) {
-      var query = "insert into AssetMaster values ('" + req.query.OEMNumber + "','" + req.query.AssetSubType + "','" + req.query.AssetDescription + "','" + req.query.Manufacturer + "','" + req.query.Model + "','" + req.query.Site + "','" + req.query.Location + "','" + req.query.SubLocation + "','" + req.query.OwnerName + "','" + req.query.Department + "','" + req.query.CostCenter + "','" + req.query.CreatedBy + "','" + newDate + "','" + req.query.UpdatedBy + "','" + newDate + "')";
+      var query = "insert into AssetMaster values ('" + req.query.OEMNumber + "','" + req.query.AssetSubType + "','" + req.query.AssetDescription + "','" + req.query.Manufacturer + "','" + req.query.Model + "','" + req.query.Site + "','" + req.query.Location + "','" + req.query.SubLocation + "','" + req.query.OwnerName + "','" + req.query.Department + "','" + req.query.CostCenter + "','" + req.query.CreatedBy + "','" + newDate + "','" + req.query.UpdatedBy + "','" + newDate + "','" + "" + "')";
       executeUpdateQuery(res, query, function(error, result) {
         if (error) {
           res.send({
@@ -487,6 +488,49 @@ app.get("/api/getbysublocationandsiteandlocation", function(req, res) {
     if (req.query.SubLocation != undefined && req.query.Site != undefined && req.query.Location != undefined) {
       var query = "select * from AssetMaster where SubLocation = '" + req.query.SubLocation + "' and Site = '" + req.query.Site + "' and Location = '" + req.query.Location + "'";
       allrecordexecuteQuery (res, query);
+    } else {
+      return res.status(400).send({
+        message: "Bad Request: invalid parameters"
+      });
+    }
+});
+
+app.get("/api/getAuditID", function(req, res) {
+      var query = "SELECT * FROM AuditMaster ORDER BY AuditID DESC";
+      executeQuery (res, query);
+});
+
+app.get("/api/getallAuditID", function(req, res) {
+      var query = "SELECT * FROM AuditMaster ORDER BY AuditID DESC";
+      allrecordexecuteQuery (res, query);
+});
+
+app.get("/api/getAuditDetails", function(req, res) {
+    // console.log(req.query);
+    if (req.query.AuditID != undefined ) {
+      var query = "select * from AuditMaster where AuditID = '" + req.query.AuditID + "'";
+      allrecordexecuteQuery (res, query);
+    } else {
+      return res.status(400).send({
+        message: "Bad Request: invalid parameters"
+      });
+    }
+});
+
+//Insert to New Asset Query
+app.get("/api/insertAudit", function(req, res) {
+    if (req.query.Site != undefined && req.query.Location != undefined && req.query.SubLocation != undefined) {
+      var query = "insert into AuditMaster values ('" + req.query.Site + "','" + req.query.Location + "','" + req.query.SubLocation + "')";
+      executeUpdateQuery(res, query, function(error, result) {
+        if (error) {
+          res.send({
+            message: error.message
+          });
+        } else {
+          var materialQuery = "select * from AuditMaster order by AuditID DESC";
+          executeQuery (res, materialQuery);
+        }
+      });
     } else {
       return res.status(400).send({
         message: "Bad Request: invalid parameters"
