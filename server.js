@@ -28,7 +28,7 @@ var DataBaseConfig = {
   password: 'briot123',
   server: 'SQL6004.site4now.net',
   database: 'DB_A409E6_jobnikhilkamble',
-  port: 3306,
+  port: 1433,
   options: {
     encrypt: false // Use this to true if you're on Windows Azure
   },
