@@ -1,12 +1,20 @@
 {
-  "name": "node",
+  "name": "server",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "description": "WMS Server",
+  "main": "server.js",
   "scripts": {
-  	"start": "node main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
-  "author": "BRiOT",
-  "license": "ISC"
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csv-express": "^1.2.2",
+    "express": "^4.16.2",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.13.7",
+    "mssql": "^4.1.0",
+    "sugar": "^2.0.4"
+  }
 }
