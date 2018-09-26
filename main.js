@@ -12,7 +12,7 @@ app.use(function (req, res, next) {
   //Enabling CORS
   res.header("Access-Control-Allow-Origin", "https://audit-asset-management.herokuapp.com");
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, contentType,Content-Type, Accept, Authorization");
+  res.header("Access-Control-Allow-Headers", "xhttp, Origin, X-Requested-With, contentType,Content-Type, Accept, Authorization");
   next();
 });
 
@@ -24,10 +24,10 @@ app.use(function (req, res, next) {
 
 //Initiallising connection string (production)
 var DataBaseConfig = {
-  user: 'sa',
+  user: 'DB_A409E6_jobnikhilkamble_admin',
   password: 'briot123',
-  server: 'DESKTOP-FMUJ546\\SQLEXPRESS',
-  database: 'AssetManagement',
+  server: 'SQL6004.site4now.net',
+  database: 'DB_A409E6_jobnikhilkamble',
   port: 3306,
   options: {
     encrypt: false // Use this to true if you're on Windows Azure
